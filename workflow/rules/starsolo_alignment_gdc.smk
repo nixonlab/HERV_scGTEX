@@ -7,22 +7,25 @@
 ## a scheme to name output directories
 ## see if I can integrate PEP here
 
+rule decompress_whitelist:
+	input: "databases/remotefiles/whitelist.10x.v3.txt.gz"
+	output: "databases/remotefiles/whitelist.10x.v3.txt"
+	shell:
+		"gunzip {input}"
+
 rule starsolo_alignment:
 	"""
 	Align sequencing reads from a 10x V3 single-cell RNA-seq experiment using STARsolo
 	"""
 	input:
-		cDNA_L1 = "data/{dataset}/{sample}_S1_L001_R2_001.fastq.gz",
-		cDNA_L2 = "data/{dataset}/{sample}_S1_L002_R2_001.fastq.gz",
-		barcode_L1 = "data/{dataset}/{sample}_S1_L001_R1_001.fastq.gz",
-		barcode_L2 = "data/{dataset}/{sample}_S1_L002_R1_001.fastq.gz",
+		cDNA = "data/{sample}_R2.fastq",
+		barcodes = "data/{sample}_R1.fastq",
 		genome = "databases/star_index_GDCHG38_gencode38",
-		whitelist = "resources/whitelist/3M-february-2018.txt"
+		whitelist = "databases/remotefiles/whitelist.10x.v3.txt"
 	output:
-		"results/{dataset}/{sample}_GDC38.Aligned.out.bam",
-		"results/{dataset}/{sample}_GDC38.Aligned.sortedByCoord.out.bam"
+		"results/{sample}/{sample}_GDC38.Aligned.sortedByCoord.out.bam"
 	params:
-		out_prefix="results/{dataset}/{sample}_GDC38.",
+		out_prefix="results/{sample}/{sample}_GDC38.",
 		cb_start=config["cellbarcode_start"],
 		cb_length=config["cellbarcode_length"],
 		umi_start=config["umi_start"],
@@ -30,14 +33,14 @@ rule starsolo_alignment:
 		max_multimap=config["max_multimap"]
 	conda:
 		"../envs/star.yaml"
-	threads: 18
+	threads: workflow.cores
 	shell:
-		'''
+		'''	
 		#--- STARsolo (turned on by --soloType CB_UMI_Simple)
 		STAR\
 			--runThreadN {threads}\
 			--genomeDir {input.genome}\
-			--readFilesIn {input.cDNA_L1},{input.cDNA_L2} {input.barcode_L1},{input.barcode_L2}\
+			--readFilesIn {input.cDNA} {input.barcodes}\
 			--readFilesCommand gunzip -c\
 			--soloType CB_UMI_Simple\
 			--soloCBwhitelist {input.whitelist}\
@@ -47,6 +50,6 @@ rule starsolo_alignment:
 			--soloUMIlen {params.umi_length}\
 			--outFilterMultimapNmax {params.max_multimap}\
 			--outSAMattributes NH HI nM AS CR UR CB UB GX GN sS sQ sM\
-			--outSAMtype BAM Unsorted SortedByCoordinate\
+			--outSAMtype BAM SortedByCoordinate\
 			--outFileNamePrefix {params.out_prefix}
 		'''
