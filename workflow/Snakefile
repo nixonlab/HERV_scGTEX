@@ -6,7 +6,7 @@ configfile: "config/config.yaml"
 # Setup
 import pandas as pd
 
-gtex_samples = pd.read_table(config[samples_tsv]).set_index("tissue_id", drop=False)
+gtex_samples = pd.read_table(config["samples_tsv"]).set_index("tissue_id", drop=False)
 
 #from __future__ import (absolute_import, division,
 #                        print_function, unicode_literals)
