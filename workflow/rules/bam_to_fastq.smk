@@ -3,13 +3,15 @@
 
 ########################### DOWNLOADED BAMS TO FASTQS ###########################
 rule bam_to_fastq:
-    conda: "../envs/utils.yaml"
+    conda:
+        "../envs/utils.yaml"
     output:
         R1 = temp("samples/{s}/original_R1.fastq"),
 	R2 = temp("samples/{s}/original_R2.fastq")
     input:
         "samples/{s}/original.bam"
-    threads: workflow.cores
+    threads:
+        workflow.cores
     benchmark:
         "benchmarks/bam_to_fastq/{s}_bam_to_fastq.tsv"
     params:
