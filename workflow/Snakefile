@@ -1,20 +1,57 @@
-# The main entry point of your workflow.
-# After configuring, running snakemake -n in a clone of this repository should successfully execute a dry-run of the workflow.
+ #! /usr/bin/env python
+# -*- coding: utf-8 -*-
 
-# do I even have access to this repo?
-# 
-#
-report: "report/workflow.rst"
+# Setup
 
-# Allow users to fix the underlying OS via singularity.
-singularity: "docker://continuumio/miniconda3"
+from __future__ import (absolute_import, division,
+                        print_function, unicode_literals)
+from builtins import *
 
+import re
+import gzip
+from collections import defaultdict
+
+from snakemake.utils import min_version
+
+min_version("6.4.1")
+
+from snakemake.exceptions import RuleException
+
+
+# Set up sample wildcards
+wildcard_constraints:
+    caseid = 'TCGA-[0-9A-Z]{2}-[0-9A-Z]{4}',
+    sampid = 'TCGA-[0-9A-Z]{2}-[0-9A-Z]{4}-\d{2}[A-Z]',
+    uuid = '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}'
+
+configfile: "config/config.yaml"
+
+# Parse metadata
+METADATA = {}
+tsv = (l.strip('\n').split('\t') for l in open(config['sample_tsv'], 'r'))
+header = next(tsv)
+for row in tsv:
+    d = dict(zip(header, row))
+    METADATA[d['sample']] = d
+
+# Create filtered metadata file with pilot data
+
+PILOT = {sample: data for sample, data in METADATA.items() if data.get('pilot') == 'True'}
+
+# PILOT = {sample: data for sample, data in METADATA.items() if data.get('sample') == 'DLBCL11589'}
+
+# To run for pilot data, sampid=PILOT.keys()
+# To run for all data, sampid=METADATA.keys()
 
 rule all:
     input:
-        # The first rule should define the default target files
-        # Subsequent target rules can be specified below. They should start with all_*.
+        expand("results/completed/{s}_completed.txt", s=PILOT.keys())
 
+# Rules to include
+#include: "rules/gdc_download.smk"
+include: "rules/references.smk"
+include: "rules/bam_to_fastq.smk"
+include: "rules/star_index.smk"
+include: "rules/star_alignment.smk"
+include: "rules/telescope.smk"
 
-include: "rules/common.smk"
-include: "rules/other.smk"
