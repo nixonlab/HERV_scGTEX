@@ -8,11 +8,11 @@ rule star_alignment:
     conda:
         "../envs/star.yaml"
     input:
-        R1 = "samples/{s}/original_R1.fastq",
-	R2 = "samples/{s}/original_R2.fastq",
+        R1 = "samples/bulk/{s}/{s}_original_R1.fastq",
+	R2 = "samples/bulk/{s}/{s}_original_R2.fastq",
 	genome = config['indexes']['star']
     output:
-        aligned_bam = "results/star_alignment/{s}/{s}_GDC38.Aligned.out.bam"
+        aligned_bam = "results/star_alignment/bulk/{s}/{s}_GDC38.Aligned.out.bam"
     params:
         out_prefix="results/star_alignment/{s}/{s}_GDC38.",
 	outFilterMultimapNmax=config['outFilterMultimapNmax'],
