@@ -9,7 +9,7 @@ rule bam_to_fastq:
         R1 = temp("samples/{s}/original_R1.fastq"),
 	R2 = temp("samples/{s}/original_R2.fastq")
     input:
-        "samples/{s}/original.bam"
+        "samples/bulk/{s}.Aligned.sortedByCoord.out.patched.md.bam"
     threads:
         workflow.cores
     benchmark:
