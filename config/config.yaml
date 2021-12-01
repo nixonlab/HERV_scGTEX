@@ -1,5 +1,5 @@
 # GTEx samples table
-sample_tsv: "config/GTEx_samples.tsv"
+samples_tsv: "config/GTEx_samples.tsv"
 
 # path to gdc token file
 #gdc_token_file: "config/gdc-user-token.txt"

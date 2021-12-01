@@ -1,51 +1,58 @@
  #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+configfile: "config/config.yaml"
+
 # Setup
+import pandas as pd
 
-from __future__ import (absolute_import, division,
-                        print_function, unicode_literals)
-from builtins import *
+gtex_samples = pd.read_table(config[samples_tsv]).set_index("tissue_id", drop=False)
 
-import re
-import gzip
-from collections import defaultdict
+#from __future__ import (absolute_import, division,
+#                        print_function, unicode_literals)
+#from builtins import *
 
-from snakemake.utils import min_version
+#import re
+#import gzip
+#from collections import defaultdict
 
-min_version("6.4.1")
+#from snakemake.utils import min_version
 
-from snakemake.exceptions import RuleException
+#min_version("6.4.1")
+
+#from snakemake.exceptions import RuleException
 
 
 # Set up sample wildcards
-wildcard_constraints:
-    caseid = 'TCGA-[0-9A-Z]{2}-[0-9A-Z]{4}',
-    sampid = 'TCGA-[0-9A-Z]{2}-[0-9A-Z]{4}-\d{2}[A-Z]',
-    uuid = '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}'
-
-configfile: "config/config.yaml"
+#wildcard_constraints:
+#    caseid = 'TCGA-[0-9A-Z]{2}-[0-9A-Z]{4}',
+#    sampid = 'TCGA-[0-9A-Z]{2}-[0-9A-Z]{4}-\d{2}[A-Z]',
+#    uuid = '[0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-4[0-9A-Fa-f]{3}-[89ABab][0-9A-Fa-f]{3}-[0-9A-Fa-f]{12}'
 
 # Parse metadata
-METADATA = {}
-tsv = (l.strip('\n').split('\t') for l in open(config['sample_tsv'], 'r'))
-header = next(tsv)
-for row in tsv:
-    d = dict(zip(header, row))
-    METADATA[d['sample']] = d
+#METADATA = {}
+#tsv = (l.strip('\n').split('\t') for l in open(config['sample_tsv'], 'r'))
+#header = next(tsv)
+#for row in tsv:
+#    d = dict(zip(header, row))
+#    METADATA[d['sample']] = d
 
 # Create filtered metadata file with pilot data
 
-PILOT = {sample: data for sample, data in METADATA.items() if data.get('pilot') == 'True'}
+#PILOT = {sample: data for sample, data in METADATA.items() if data.get('pilot') == 'True'}
 
 # PILOT = {sample: data for sample, data in METADATA.items() if data.get('sample') == 'DLBCL11589'}
 
 # To run for pilot data, sampid=PILOT.keys()
 # To run for all data, sampid=METADATA.keys()
 
+#rule all:
+#    input:
+#        expand("results/completed/{s}_completed.txt", s=PILOT.keys())
+
 rule all:
     input:
-        expand("results/completed/{s}_completed.txt", s=PILOT.keys())
+        expand("results/completed/{s}_completed.txt", s=gtex_samples["bulk_RNAseq"])
 
 # Rules to include
 #include: "rules/gdc_download.smk"
