@@ -6,8 +6,8 @@ rule bam_to_fastq:
     conda:
         "../envs/utils.yaml"
     output:
-        R1 = temp("samples/{s}/original_R1.fastq"),
-	R2 = temp("samples/{s}/original_R2.fastq")
+        R1 = temp("samples/bulk/{s}/{s}_original_R1.fastq"),
+	R2 = temp("samples/bulk/{s}/{s}_original_R2.fastq")
     input:
         "samples/bulk/{s}.Aligned.sortedByCoord.out.patched.md.bam"
     threads:
