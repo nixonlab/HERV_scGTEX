@@ -1,8 +1,9 @@
 
 data
 results
-resources
+#resources
 databases
+samples
 logs
 .snakemake
 
