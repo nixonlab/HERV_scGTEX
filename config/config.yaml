@@ -31,9 +31,9 @@ sequences:
     transcripts_dupinfo: "refs/sequences/dupinfo.txt"
 
 indexes:
-    kallisto: "refs/index.kallisto/transcripts"
-    bowtie2: "refs/index.bowtie2/genome"
-    hisat2: "refs/index.hisat2/genome"
+    #kallisto: "refs/index.kallisto/transcripts"
+    #bowtie2: "refs/index.bowtie2/genome"
+    #hisat2: "refs/index.hisat2/genome"
     star: "refs/index.star/genome"
 
 annotations:
@@ -48,7 +48,6 @@ annotations:
     gsym: "refs/annotation/gsym.tsv"
 
 ##### rule-specific resources and parameters #####
-
 # STAR index
 sjdbOverhang: 74
 star_index_threads: 32
