@@ -10,7 +10,7 @@ rule telescope:
 	"results/telescope/{s}/{s}_telescope.updated.bam",
 	"results/telescope/{s}/{s}_telescope.other.bam"
     input:
-        bam = "results/star_alignment/{s}/{s}_GDC38.Aligned.out.bam",
+        bam = "results/star_alignment/bulk/{s}/{s}_GDC38.Aligned.out.bam",
 	annotation = rules.telescope_annotation.output
     benchmark:
         "benchmarks/telescope/{s}_telescope.tsv"
