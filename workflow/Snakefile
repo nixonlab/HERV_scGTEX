@@ -1,27 +1,27 @@
  #! /usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# Setup
+from __future__ import (absolute_import, division,
+                        print_function, unicode_literals)
+from builtins import *
+
+import re
+import gzip
+import pandas as pd
+from collections import defaultdict
+
+from snakemake.utils import min_version
+
+min_version("6.4.1")
+
+from snakemake.exceptions import RuleException
+
+# config file
 configfile: "config/config.yaml"
 
-# Setup
-import pandas as pd
-
+# read samples table
 gtex_samples = pd.read_table(config["samples_tsv"]).set_index("tissue_id", drop=False)
-
-#from __future__ import (absolute_import, division,
-#                        print_function, unicode_literals)
-#from builtins import *
-
-#import re
-#import gzip
-#from collections import defaultdict
-
-#from snakemake.utils import min_version
-
-#min_version("6.4.1")
-
-#from snakemake.exceptions import RuleException
-
 
 # Set up sample wildcards
 #wildcard_constraints:
