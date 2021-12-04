@@ -192,59 +192,59 @@ python workflow/scripts/sortgtf.py --fai {input[1]} < {input[0]} > {output[0]}
 
 ################################## INDEX REFS ##################################
 
-#rule kallisto_index:
-#    input:
-#        config['sequences']['transcripts']
-#    output:
-#        config['indexes']['kallisto']
-#    conda:
-#        "../envs/kallisto.yaml"
-#    shell:
-#        '''
-#mkdir -p $(dirname {output})
-#kallisto index -i {output} {input}
-#        '''
-#
-#
-#rule bowtie2_index:
-#    input:
-#        config['sequences']['genome']
-#    output:
-#        multiext(config['indexes']['bowtie2'],
-#            '.1.bt2', '.2.bt2', '.3.bt2','.4.bt2', '.rev.1.bt2', '.rev.2.bt2',
-#        )
-#    conda:
-#        "../envs/bowtie2.yaml"
-#    threads: snakemake.utils.available_cpu_count()
-#    shell:
-#        '''
-#mkdir -p $(dirname {config[indexes][bowtie2]})
-#tfa=$(mktemp -p {config[local_tmp]})
-#gunzip -c {input[0]} > $tfa
-#bowtie2-build --threads {threads} $tfa {config[indexes][bowtie2]}
-#rm -f $tfa
-#        '''
-#
-#
-#rule hisat2_index:
-#    input:
-#        config['sequences']['genome']
-#    output:
-#        multiext(config['indexes']['hisat2'],
-#            '.1.ht2', '.2.ht2', '.3.ht2','.4.ht2', '.5.ht2', '.6.ht2', '.7.ht2','.8.ht2',
-#        )
-#    conda:
-#        "../envs/hisat2.yaml"
-#    threads: snakemake.utils.available_cpu_count()
-#    shell:
-#        '''
-#mkdir -p $(dirname {config[indexes][hisat2]})
-#tfa=$(mktemp -p {config[local_tmp]})
-#gunzip -c {input[0]} > $tfa
-#hisat2-build -p {threads} $tfa {config[indexes][hisat2]}
-#rm -f $tfa
-#        '''
-#
+rule kallisto_index:
+    input:
+        config['sequences']['transcripts']
+    output:
+        config['indexes']['kallisto']
+    conda:
+        "../envs/kallisto.yaml"
+    shell:
+        '''
+mkdir -p $(dirname {output})
+kallisto index -i {output} {input}
+        '''
+
+
+rule bowtie2_index:
+    input:
+        config['sequences']['genome']
+    output:
+        multiext(config['indexes']['bowtie2'],
+            '.1.bt2', '.2.bt2', '.3.bt2','.4.bt2', '.rev.1.bt2', '.rev.2.bt2',
+        )
+    conda:
+        "../envs/bowtie2.yaml"
+    threads: snakemake.utils.available_cpu_count()
+    shell:
+        '''
+mkdir -p $(dirname {config[indexes][bowtie2]})
+tfa=$(mktemp -p {config[local_tmp]})
+gunzip -c {input[0]} > $tfa
+bowtie2-build --threads {threads} $tfa {config[indexes][bowtie2]}
+rm -f $tfa
+        '''
+
+
+rule hisat2_index:
+    input:
+        config['sequences']['genome']
+    output:
+        multiext(config['indexes']['hisat2'],
+            '.1.ht2', '.2.ht2', '.3.ht2','.4.ht2', '.5.ht2', '.6.ht2', '.7.ht2','.8.ht2',
+        )
+    conda:
+        "../envs/hisat2.yaml"
+    threads: snakemake.utils.available_cpu_count()
+    shell:
+        '''
+mkdir -p $(dirname {config[indexes][hisat2]})
+tfa=$(mktemp -p {config[local_tmp]})
+gunzip -c {input[0]} > $tfa
+hisat2-build -p {threads} $tfa {config[indexes][hisat2]}
+rm -f $tfa
+        '''
+
 ################################# RULE TARGETS #################################
 
 rule complete_download:
