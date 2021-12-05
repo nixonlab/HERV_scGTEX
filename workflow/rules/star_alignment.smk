@@ -14,7 +14,7 @@ rule star_alignment:
     output:
         aligned_bam = "results/star_alignment/bulk/{s}/{s}_GDC38.Aligned.out.bam"
     params:
-        out_prefix="results/star_alignment/{s}/{s}_GDC38.",
+        out_prefix="results/star_alignment/bulk/{s}/{s}_GDC38.",
 	outFilterMultimapNmax=config['outFilterMultimapNmax'],
 	winAnchorMultimapNmax=config['winAnchorMultimapNmax']
     threads:
