@@ -50,11 +50,11 @@ annotations:
 ##### rule-specific resources and parameters #####
 # STAR index
 sjdbOverhang: 74
-star_index_threads: 32
+star_index_threads: 24
 star_index_mem_mb: 40000
 
 # STAR alignment
-star_alignment_threads: 32
+star_alignment_threads: 24
 outFilterMultimapNmax: 500
 winAnchorMultimapNmax: 200
 
