@@ -1,0 +1,20 @@
+name: stellarscope
+channels:
+  - bioconda
+dependencies:
+  - python >=3.6
+  - future
+  - pip
+  - pyyaml
+  - cython
+  - numpy
+  - scipy
+  - pysam >=0.19
+  - htslib
+  - intervaltree
+  - pandas
+  - samtools
+  - pip
+  - pip:
+      - git+ssh://git@github.com/nixonlab/stellarscope.git
+
