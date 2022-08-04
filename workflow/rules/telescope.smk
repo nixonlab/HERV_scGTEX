@@ -43,9 +43,9 @@ rule telescope:
 	rm -rf $tdir
 	"""
 
-rule sample_complete:
+rule bulk_complete:
     input:
         rules.telescope.output
     output:
-        touch("results/completed/{s}_completed.txt")
+        touch("results/completed/{s}_bulk_completed.txt")
 
