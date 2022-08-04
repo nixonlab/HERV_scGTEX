@@ -47,6 +47,9 @@ annotations:
     ttg: "refs/annotation/ttg.tsv"
     gsym: "refs/annotation/gsym.tsv"
 
+whitelist:
+    v2: "resources/whitelist/whitelist.10x.v2.txt"
+
 ##### rule-specific resources and parameters #####
 # STAR index
 sjdbOverhang: 74
@@ -61,3 +64,12 @@ winAnchorMultimapNmax: 200
 # TELESCOPE
 telescope_threads: 2
 
+# STARsolo alignment parameters
+#
+cellbarcode_start: 1
+cellbarcode_length: 16
+umi_start: 17
+umi_length: 10 # v2 chemistry
+max_multimap: 500
+
+stellarscope_cellsort_threads: 4
