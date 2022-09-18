@@ -26,10 +26,15 @@ sc_subsamples = pd.read_table('config/pep/snRNAseq_GTEX_stellarscope_subsample_t
 # read samples table
 gtex_samples = pd.read_table(config["samples_tsv"]).set_index("tissue_id", drop=False)
 
+# params
+# We are not generating multiple reassignment modes for now
+#s_reassignment = ["all", "average", "choose", "conf", "exclude", "unique"]
+
 rule all:
     input:
         expand("results/completed/{s}_bulk_completed.txt", s=gtex_samples["bulk_RNAseq"]),
-        expand("results/completed/{s}_sc_{s_method}_completed.txt", s=gtex_samples["sn_RNAseq"], s_method=["individual", "pseudobulk"])
+#        expand("results/completed/{s}_sc_{s_method}_{reassignment}_completed.txt", s=gtex_samples["sn_RNAseq"], s_method=["individual", "pseudobulk"], reassignment = s_reassignment)
+        expand("results/completed/{s}_sc_{s_method}_rep{copies}_{strands}_completed.txt", s=gtex_samples["sn_RNAseq"], s_method=["pseudobulk"], copies=[1,2], strands=["U","F"])
 
 # Rules to include
 #include: "rules/gdc_download.smk"
@@ -41,5 +46,7 @@ include: "rules/telescope.smk"
 include: "rules/make_sc_sample_fastqs.smk"
 include: "rules/starsolo_alignment.smk"
 include: "rules/stellarscope_cellsort.smk"
-include: "rules/stellarscope.smk"
+include: "rules/stellarscope_13.smk"
+#include: "rules/stellarscope.smk"
+#include: "rules/autoread_seurat.smk"
 
