@@ -1,0 +1,10 @@
+name: scopetools_env
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - r-base
+  - r-r.utils
+  - r-magrittr
+
