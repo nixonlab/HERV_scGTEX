@@ -46,8 +46,9 @@ rule stellarscope_assign:
 	    2>&1 | tee {log[0]}
 	'''
 
-rule sc_complete:
-    input:
-        rules.stellarscope_assign.output
-    output:
-        touch("results/completed/{s}_sc_{s_method}_completed.txt")
+#rule sc_complete:
+#    input:
+#        rules.stellarscope_assign.output
+#    output:
+#        touch("results/completed/{s}_sc_{s_method}_completed.txt")
+
